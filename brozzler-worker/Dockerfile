@@ -30,11 +30,14 @@ RUN apt-get install -y dbus
 RUN useradd -ms /bin/bash brozzler
 
 ADD xvfb-run-chromium-browser.sh /usr/bin
-#
-EXPOSE 8100
 
 USER brozzler
 WORKDIR /home/brozzler
 
+ARG RETHINKDB_SERVER="localhost"
+ARG RETHINKDB_SERVER_PORT="28015"
+
+ENV RETHINKDB_SERVER=${RETHINKDB_SERVER}
+ENV RETHINKDB_SERVER_PORT=${RETHINKDB_SERVER_PORT}
 #
-CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server 172.17.0.1:28015 -e /usr/bin/xvfb-run-chromium-browser.sh --trace 
+CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server ${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT} -e /usr/bin/xvfb-run-chromium-browser.sh --trace 

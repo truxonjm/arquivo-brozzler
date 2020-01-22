@@ -1,17 +1,23 @@
-# https://github.com/ukwa/docker-warcprox
+# Based on https://github.com/ukwa/docker-warcprox
 FROM python:3.6-alpine
-
-MAINTAINER steranin
 
 RUN export LC_ALL=C.UTF-8 && \
     apk add --update build-base libffi libffi-dev openssl openssl-dev git && \
     pip install 'git+https://github.com/internetarchive/warcprox.git' && \
     apk del build-base libffi-dev openssl-dev
 
-EXPOSE 9000 
-
 VOLUME ["/warcs", "/db", "/ca"]
 
-#ENTRYPOINT ["warcprox", "--address", "0.0.0.0", "--port", "8888"]
+ARG RETHINKDB_SERVER="localhost"
+ARG RETHINKDB_SERVER_PORT="28015"
+ARG WARCPROXY_PORT="9000"
+ARG DATA_FOLDER="/data"
 
-CMD warcprox --rethinkdb-servers 172.17.0.1:28015 --rethinkdb-db brozzler --rethinkdb-big-table -p 9000 -b 0.0.0.0 --base32 -z --rollover-idle-time 3600 2>&1 | tee /logs
+ENV RETHINKDB_SERVER=${RETHINKDB_SERVER}
+ENV RETHINKDB_SERVER_PORT=${RETHINKDB_SERVER_PORT}
+ENV WARCPROXY_PORT=${WARCPROXY_PORT}
+ENV DATA_FOLDER=${DATA_FOLDER}
+
+EXPOSE ${WARCPROXY_PORT}
+
+CMD warcprox --method-filter=GET --method-filter=POST --rethinkdb-services-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/services --rethinkdb-big-table-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/captures --rethinkdb-stats-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/stats -s 104857600 -b 0.0.0.0 --rollover-idle-time 3600 -p ${WARCPROXY_PORT} --base32 -z -d ${DATA_FOLDER} --crawl-log-dir ${DATA_FOLDER} --blackout-period 10
