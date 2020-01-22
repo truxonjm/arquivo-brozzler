@@ -9,9 +9,8 @@ RUN apt-get -y install gcc
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce#egg=brozzler[easy]'
-#    pip3.4 install brozzler
-#     pip3.5 install brozzler==1.1b11
+    pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce#egg=brozzler[easy]' && \
+    pip3.5 install 'git+https://github.com/arquivo/brozzleradmin.git'
 RUN apt-get install -y dbus
 
 RUN useradd -ms /bin/bash brozzler
@@ -27,16 +26,25 @@ COPY . .
 
 ARG RETHINKDB_SERVER="localhost"
 ARG RETHINKDB_SERVER_PORT="28015"
-ARG DASHBOARD_PORT=8000
-ARG DASHBOARD_INTERFACE=0.0.0.0
+ARG DASHBOARD_PORT="8000"
+ARG DASHBOARD_INTERFACE="0.0.0.0"
 ARG WAYBACK_BASEURL="http://localhost:8880/brozzler"
+ARG BROZZLER_RETHINKDB_SERVERS="localhost"
+ARG BROZZLER_RETHINKDB_DB="localhost"
 
 ENV RETHINKDB_SERVER=${RETHINKDB_SERVER}
 ENV RETHINKDB_SERVER_PORT=${RETHINKDB_SERVER_PORT}
 
+ENV BROZZLER_RETHINKDB_SERVERS=${RETHINKDB_SERVER}
+ENV BROZZLER_RETHINKDB_DB=${BROZZLER_RETHINKDB_DB}
+
 ENV PYWB_CONFIG_FILE=./pywb.yml
+
+ENV BROZZLER_ADMIN_CONFIGURATION=./config.py
 ENV DASHBOARD_PORT=${DASHBOARD_PORT}
 ENV DASHBOARD_INTERFACE=${DASHBOARD_INTERFACE}
 ENV WAYBACK_BASEURL=${WAYBACK_BASEURL}
 
+
+# default app is dashboard
 CMD brozzler-dashboard
