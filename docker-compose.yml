@@ -11,6 +11,7 @@ services:
             - brozzler_data:/data
         ports:
             - "8080:8080"
+            - "28015:28015"
 
     brozzler-worker:
         build:
@@ -19,6 +20,7 @@ services:
                 RETHINKDB_SERVER: "rethinkdb"
         depends_on:
             - rethinkdb
+
     brozzler-warcprox:
         build:
             context: ./brozzler-warcprox
@@ -35,12 +37,9 @@ services:
             context: ./brozzler-frontend
             args:
                 RETHINKDB_SERVER: "rethinkdb"
-                DASHBOARD_INTERFACE: "0.0.0.0"
-                WAYBACK_BASEURL: "brozzler-wayback"
+                DASHBOARD_INTERFACE: "0.0.0.0"                
                 BROZZLER_RETHINKDB_DB: "brozzler"
         entrypoint: [ "brozzler-dashboard" ]
-        expose:
-            - "8000"
         ports:
             - "8000:8000"
 
@@ -50,10 +49,9 @@ services:
             args:
                 RETHINKDB_SERVER: "rethinkdb"
                 DASHBOARD_INTERFACE: "0.0.0.0"
+                BROZZLER_ADMIN_CONFIGURATION: "/home/brozzler/config.py"
         volumes:
-            - ./configs/config.py:/home/brozzler/configs.py
-        expose:
-            - "5001"
+            - ./configs/config.py:/home/brozzler/config.py
         ports:
             - "5001:5001"
         entrypoint: [ "bc-launch-ui", "--host", "0.0.0.0" ]
@@ -63,12 +61,9 @@ services:
             context: ./brozzler-frontend
             args:
                 RETHINKDB_SERVER: "rethinkdb"
-                DATA_FOLDER: /data
         volumes:
             - ./configs/pywb.yml:/home/brozzler/pywb.yml
             - brozzler_data:/data
         entrypoint: [ "brozzler-wayback" ]
-        expose:
-            - "8880"
         ports:
             - "8880:8880"

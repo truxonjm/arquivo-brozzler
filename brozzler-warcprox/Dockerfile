@@ -17,4 +17,4 @@ ENV DATA_FOLDER=${DATA_FOLDER}
 
 EXPOSE ${WARCPROXY_PORT}
 
-CMD warcprox --method-filter=GET --method-filter=POST --rethinkdb-services-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/services --rethinkdb-big-table-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/captures --rethinkdb-stats-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/stats -s 104857600 -b 0.0.0.0 --rollover-idle-time 3600 -p ${WARCPROXY_PORT} --base32 -z -d ${DATA_FOLDER} --crawl-log-dir ${DATA_FOLDER} --blackout-period 10
+CMD warcprox --method-filter=GET --method-filter=POST --rethinkdb-services-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/services --rethinkdb-big-table-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/captures --rethinkdb-stats-url rethinkdb://${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT}/brozzler/stats -s 104857600 -b 0.0.0.0 --rollover-idle-time 3600 -p ${WARCPROXY_PORT} --base32 -z -d ${DATA_FOLDER}/warcs --crawl-log-dir ${DATA_FOLDER}/logs --blackout-period 10
