@@ -1,8 +1,19 @@
 # arquivo-brozzler
 
-## Launching Brozzler enviroment
-```
-docker-compose up -d
-```
+## Components
+- rethinkdb
+- warcprox
+- brozzler-worker
+- brozzler-frontend:
+  - brozzler-dashboard
+  - brozzler-wayback
+  - brozzler-admin
 
-Endpoint: https://localhost:5001
+
+## Launching Brozzler enviroment
+
+``
+docker-compose up -d
+``
+
+Navigate to https://localhost:5001 (brozzler-admin)
