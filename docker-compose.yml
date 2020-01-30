@@ -19,7 +19,8 @@ services:
 
     brozzler-worker:
         build:
-            context: ./brozzler-worker            
+            context: ./brozzler-worker
+        shm_size: '256m'
         environment: 
             - RETHINKDB_SERVER=rethinkdb
         depends_on:
