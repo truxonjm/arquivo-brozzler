@@ -22,7 +22,7 @@ services:
             context: ./brozzler-worker
         shm_size: '256m'
         environment: 
-            - RETHINKDB_SERVER=rethinkdb
+            - BROZZLER_RETHINKDB_SERVERS=rethinkdb
         depends_on:
             - rethinkdb
 

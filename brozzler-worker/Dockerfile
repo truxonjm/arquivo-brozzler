@@ -32,10 +32,4 @@ ADD xvfb-run-chromium-browser.sh /usr/bin
 USER brozzler
 WORKDIR /home/brozzler
 
-ARG RETHINKDB_SERVER="localhost"
-ARG RETHINKDB_SERVER_PORT="28015"
-
-ENV RETHINKDB_SERVER=${RETHINKDB_SERVER}
-ENV RETHINKDB_SERVER_PORT=${RETHINKDB_SERVER_PORT}
-#
-CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server ${RETHINKDB_SERVER}:${RETHINKDB_SERVER_PORT} -e /usr/bin/xvfb-run-chromium-browser.sh --trace 
+CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server ${BROZZLER_RETHINKDB_SERVERS} -e /usr/bin/xvfb-run-chromium-browser.sh --trace 
