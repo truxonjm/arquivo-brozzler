@@ -32,4 +32,7 @@ ADD xvfb-run-chromium-browser.sh /usr/bin
 USER brozzler
 WORKDIR /home/brozzler
 
-CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server ${BROZZLER_RETHINKDB_SERVERS} -e /usr/bin/xvfb-run-chromium-browser.sh --trace 
+# example --trace
+ARG EXTRA_ARGS
+
+CMD brozzler-worker -n 1 --warcprox-auto --rethinkdb-db brozzler --rethinkdb-server ${BROZZLER_RETHINKDB_SERVERS} -e /usr/bin/xvfb-run-chromium-browser.sh ${EXTRA_ARGS}

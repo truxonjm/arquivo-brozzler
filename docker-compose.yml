@@ -3,10 +3,6 @@ version: '3.7'
 volumes:
     brozzler_data:
         name: brozzler_data_volume
-#        driver_opts:
-#            type: none
-#            device: /data/brozzler_data
-#            o: bind
 
 services:
     rethinkdb:
