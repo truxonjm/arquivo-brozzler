@@ -22,7 +22,8 @@ RUN apt-get install -y software-properties-common x11vnc xvfb && \
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-     pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce'
+    pip3.5 install brozzler==1.5.18
+     # pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce'
 RUN apt-get install -y dbus
 
 RUN useradd -ms /bin/bash brozzler

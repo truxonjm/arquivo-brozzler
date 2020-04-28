@@ -9,7 +9,8 @@ RUN apt-get -y install gcc
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce#egg=brozzler[easy]' 
+    pip3.5 install brozzler==1.5.18
+    # pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@8beb96817ef96cefc1add4815ece3935b49595ce#egg=brozzler[easy]' 
 
 RUN pip3.5 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.3.4'
 
