@@ -1,10 +1,12 @@
 # based on https://github.com/ukwa/docker-brozzler
-FROM ubuntu:16.04
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install suitable version of Python:
 RUN apt-get update
 RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev
-RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3.5
+RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 RUN apt-get -y install gcc
 
@@ -22,7 +24,7 @@ RUN apt-get install -y software-properties-common x11vnc xvfb && \
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea'
+    pip3 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea'
 
 RUN apt-get install -y dbus
 
