@@ -1,5 +1,6 @@
 # based on https://github.com/ukwa/docker-brozzler
-FROM ubuntu:18.04
+# FROM ubuntu:20.04
+FROM debian:latest 
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -15,16 +16,17 @@ RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula selec
 
 # Install browser and fonts
 RUN apt-get install -y software-properties-common x11vnc xvfb && \
-    add-apt-repository multiverse && \
+    apt-add-repository contrib && \
     apt-get update && \
-    apt-get install -y chromium-browser xfonts-base ttf-mscorefonts-installer fonts-arphic-bkai00mp \
+    apt-get install -y chromium xfonts-base fonts-arphic-bkai00mp \
       fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai \
       fonts-farsiweb fonts-nafees fonts-sil-abyssinica fonts-sil-ezra fonts-sil-padauk \
-      fonts-unfonts-extra fonts-unfonts-core fonts-indic fonts-thai-tlwg fonts-lklug-sinhala
+      fonts-unfonts-extra fonts-unfonts-core fonts-indic fonts-thai-tlwg fonts-lklug-sinhala ttf-mscorefonts-installer
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea'
+    # pip3 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea'
+    pip3 install brozzler==1.5.18
 
 RUN apt-get install -y dbus
 

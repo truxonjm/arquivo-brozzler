@@ -43,6 +43,9 @@ services:
         entrypoint: [ "brozzler-dashboard" ]
         ports:
             - "8000:8000"
+        depends_on:
+            - rethinkdb
+
     brozzler-admin:
         build:
             context: ./brozzler-frontend
@@ -55,6 +58,8 @@ services:
         ports:
             - "5001:5001"
         entrypoint: [ "bc-launch-ui", "--host", "0.0.0.0" ]
+        depends_on:
+            - rethinkdb
     
     brozzler-wayback:
         build:
@@ -67,3 +72,5 @@ services:
         entrypoint: [ "brozzler-wayback" ]
         ports:
             - "8880:8880"
+        depends_on:
+            - rethinkdb

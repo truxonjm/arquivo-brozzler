@@ -1,19 +1,18 @@
-FROM ubuntu:16.04
+FROM debian:latest 
 
 # Install suitable version of Python:
 RUN apt-get update
-RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev
-RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3.5
-
-RUN apt-get -y install gcc
+RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++
+RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea#egg=brozzler[easy]' 
+    # pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea#egg=brozzler[easy]' 
+    pip3 install brozzler[easy]==1.5.18
 
-RUN pip3.5 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.3.4'
+RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.4.4'
 
-RUN apt-get install -y dbus
+# RUN apt-get install -y dbus
 
 RUN useradd -ms /bin/bash brozzler
 
