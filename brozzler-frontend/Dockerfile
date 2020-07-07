@@ -7,12 +7,9 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    # pip3.5 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea#egg=brozzler[easy]' 
     pip3 install brozzler[easy]==1.5.18
 
-RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.4.4'
-
-# RUN apt-get install -y dbus
+RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.5.4'
 
 RUN useradd -ms /bin/bash brozzler
 
