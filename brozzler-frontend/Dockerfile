@@ -5,11 +5,19 @@ RUN apt-get update
 RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++
 RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
+# apt-get update && apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++ && curl "https://bootstrap.pypa.io/get-pip.py" | python3
+# pip3 install pipenv && mkdir /brozzler && cd /brozzler && pipenv install && pipenv shell
+# pipenv install brozzler[easy]
+# cd / && rm -rf brozzler && mkdir /brozzler && cd /brozzler && pipenv install && pipenv shell
+
+
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3 install brozzler[easy]==1.5.18
+    pip3 install brozzler[easy]==1.5.7 --use-deprecated=legacy-resolver
 
-RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.5.4'
+#    pip3 install brozzler[easy]==1.5.7 --use-deprecated=legacy-resolver
+ 
+RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.5.4' --no-warn-conflicts --use-deprecated=legacy-resolver
 
 RUN useradd -ms /bin/bash brozzler
 
