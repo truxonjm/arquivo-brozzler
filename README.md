@@ -16,7 +16,7 @@
 docker-compose up -d
 ``
 
-Navigate to https://localhost:5001 (brozzler-admin)
+Navigate to http://localhost:5001 (brozzler-admin)
 
 
 ## Brozzler Job configs

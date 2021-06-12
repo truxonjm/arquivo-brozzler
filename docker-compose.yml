@@ -1,76 +1,77 @@
-version: '3.7'
+version: "3.7"
 
 volumes:
-    brozzler_data:
-        name: brozzler_data_volume
+  brozzler_data:
+    name: brozzler_data_volume
 
 services:
-    rethinkdb:
-        image: "rethinkdb:latest"
-        volumes:
-            - brozzler_data:/data
-        ports:
-            - "8080:8080"
-            - "28015:28015"
+  rethinkdb:
+    image: "rethinkdb:latest"
+    volumes:
+      - brozzler_data:/data
+    ports:
+      - "8080:8080"
+      - "28015:28015"
 
-    brozzler-worker:
-        build:
-            context: ./brozzler-worker
-        shm_size: '256m'
-        environment: 
-            - BROZZLER_RETHINKDB_SERVERS=rethinkdb
-        depends_on:
-            - rethinkdb
+  brozzler-worker:
+    build:
+      context: ./brozzler-worker
+    shm_size: "256m"
+    environment:
+      - BROZZLER_RETHINKDB_SERVERS=rethinkdb
+    depends_on:
+      - rethinkdb
 
-    brozzler-warcprox:
-        build:
-            context: ./brozzler-warcprox
-        environment: 
-            - RETHINKDB_SERVER=rethinkdb
-            - DATA_FOLDER=/data
-        volumes:
-            - brozzler_data:/data
-        depends_on:
-            - rethinkdb
+  brozzler-warcprox:
+    build:
+      context: ./brozzler-warcprox
+    environment:
+      - RETHINKDB_SERVER=rethinkdb
+      - DATA_FOLDER=/data
+    volumes:
+      - brozzler_data:/data
+    depends_on:
+      - rethinkdb
 
-    brozzler-dashboard:
-        build:
-            context: ./brozzler-frontend
-        environment: 
-            - DASHBOARD_INTERFACE=0.0.0.0
-            - BROZZLER_RETHINKDB_SERVERS=rethinkdb
-            - BROZZLER_RETHINKDB_DB=brozzler
-        entrypoint: [ "brozzler-dashboard" ]
-        ports:
-            - "8000:8000"
-        depends_on:
-            - rethinkdb
+  brozzler-dashboard:
+    build:
+      context: ./brozzler-frontend
+    environment:
+      - DASHBOARD_INTERFACE=0.0.0.0
+      - BROZZLER_RETHINKDB_SERVERS=rethinkdb
+      - BROZZLER_RETHINKDB_DB=brozzler
+    entrypoint: ["brozzler-dashboard"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rethinkdb
 
-    brozzler-admin:
-        build:
-            context: ./brozzler-frontend
-        environment: 
-            - RETHINKDB_SERVER=rethinkdb
-            - DASHBOARD_INTERFACE=0.0.0.0
-            - BROZZLER_ADMIN_CONFIGURATION=/home/brozzler/config.py
-        volumes:
-            - ./configs/config.py:/home/brozzler/config.py
-        ports:
-            - "5001:5001"
-        entrypoint: [ "bc-launch-ui", "--host", "0.0.0.0" ]
-        depends_on:
-            - rethinkdb
-    
-    brozzler-wayback:
-        build:
-            context: ./brozzler-frontend
-        environment: 
-            - RETHINKDB_SERVER=rethinkdb
-        volumes:
-            - ./configs/pywb.yml:/home/brozzler/pywb.yml
-            - brozzler_data:/data
-        entrypoint: [ "brozzler-wayback" ]
-        ports:
-            - "8880:8880"
-        depends_on:
-            - rethinkdb
+  brozzler-admin:
+    build:
+      context: ./brozzler-frontend
+    environment:
+      - RETHINKDB_SERVER=rethinkdb
+      - DASHBOARD_INTERFACE=0.0.0.0
+      - BROZZLER_ADMIN_CONFIGURATION=/home/brozzler/config.py
+    volumes:
+      - ./configs/config.py:/home/brozzler/config.py
+    ports:
+      - "5001:5001"
+    entrypoint: ["bc-launch-ui", "--host", "0.0.0.0"]
+    depends_on:
+      - rethinkdb
+
+  brozzler-wayback:
+    build:
+      context: ./brozzler-frontend
+    environment:
+      - RETHINKDB_SERVER=rethinkdb
+    volumes:
+      - ./configs/pywb.yml:/home/brozzler/pywb.yml
+      - brozzler_data:/data
+    #entrypoint: ["/bin/bash"]
+    entrypoint: ["brozzler-wayback"]
+    ports:
+      - "8880:8880"
+    depends_on:
+      - rethinkdb
