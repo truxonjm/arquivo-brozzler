@@ -15,25 +15,28 @@ RUN apt-get -y install gcc
 RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections # Accept EULA for MS fonts
 
 # Install browser and fonts
-RUN apt-get install -y software-properties-common x11vnc xvfb && \
+RUN apt-get install -y software-properties-common x11vnc xvfb dos2unix && \
     apt-add-repository contrib && \
+    #apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update && \
     apt-get update && \
     apt-get install -y chromium xfonts-base fonts-arphic-bkai00mp \
-      fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai \
-      fonts-farsiweb fonts-nafees fonts-sil-abyssinica fonts-sil-ezra fonts-sil-padauk \
-      fonts-unfonts-extra fonts-unfonts-core fonts-indic fonts-thai-tlwg fonts-lklug-sinhala ttf-mscorefonts-installer
+    fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai \
+    fonts-farsiweb fonts-nafees fonts-sil-abyssinica fonts-sil-ezra fonts-sil-padauk \
+    fonts-unfonts-extra fonts-unfonts-core fonts-indic fonts-thai-tlwg fonts-lklug-sinhala ttf-mscorefonts-installer
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
     # pip3 install 'git+https://github.com/internetarchive/brozzler.git@4df280a9b619c6a5b88c84dbe670602721c025ea'
-    #pip3 install brozzler==1.5.18
-    pip3 install 'git+https://github.com/internetarchive/brozzler.git'
+    #pip3 install brozzler==1.5.7
+    #pip3 install 'git+https://github.com/internetarchive/brozzler.git'
+    pip3 install 'git+https://github.com/truxonjm/brozzler.git'
 
 RUN apt-get install -y dbus
 
 RUN useradd -ms /bin/bash brozzler
 
-ADD xvfb-run-chromium-browser.sh /usr/bin
+COPY xvfb-run-chromium-browser.sh /usr/bin
+RUN dos2unix /usr/bin/xvfb-run-chromium-browser.sh
 
 USER brozzler
 WORKDIR /home/brozzler

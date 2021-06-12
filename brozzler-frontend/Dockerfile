@@ -1,9 +1,9 @@
 FROM debian:latest 
 
 # Install suitable version of Python:
-RUN apt-get update
-RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++
-RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
+RUN apt-get update &&  \
+    apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++ && \
+    curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 # apt-get update && apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++ && curl "https://bootstrap.pypa.io/get-pip.py" | python3
 # pip3 install pipenv && mkdir /brozzler && cd /brozzler && pipenv install && pipenv shell
@@ -13,10 +13,15 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 # Install brozzler itself:
 RUN export LC_ALL=C.UTF-8 && \
-    pip3 install brozzler[easy]==1.5.7 --use-deprecated=legacy-resolver
+    #pip3 install brozzler[easy]==1.5.7 --use-deprecated=legacy-resolver
+    pip3 install -e "git+https://github.com/truxonjm/brozzler.git#egg=brozzler[easy]" --use-deprecated=legacy-resolver && \
+    pip3 uninstall pywb -y && \
+    #patched to use unsafe yaml load
+    pip3 install git+https://github.com/truxonjm/pywb.git@bed5d0a40a9161d29f6453c9eb0c77333a4c394d  
 
-#    pip3 install brozzler[easy]==1.5.7 --use-deprecated=legacy-resolver
- 
+#https://stackoverflow.com/questions/30239152/specify-extras-require-with-pip-install-e
+
+
 RUN pip3 install 'git+https://github.com/arquivo/brozzleradmin.git@v0.5.4' --no-warn-conflicts --use-deprecated=legacy-resolver
 
 RUN useradd -ms /bin/bash brozzler
